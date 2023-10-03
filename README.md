@@ -1,4 +1,4 @@
-# Caddy-Cloudflare-proxy
+# Caddy-Cloudflare-Proxy
 
 [![Docker Hub](https://img.shields.io/badge/Docker%20Hub-zenjoy%2Fcaddy--cloudflare--s3-lightgrey?style=flat)](https://hub.docker.com/r/zenjoy/caddy-cloudflare-proxy)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/zenjoy/docker-caddy-cloudflare-proxy?label=version)](https://github.com/zenjoy/docker-caddy-cloudflare-proxy/tags)
