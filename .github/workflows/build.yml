@@ -55,7 +55,7 @@ jobs:
           echo "branch=$(echo ${GIT_REF,,} | sed 's/[^a-zA-Z0-9]/-/g')" | tee -a $GITHUB_OUTPUT
 
       - name: Generate Docker metadata with Caddy version
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: metadata
         with:
           images: |
@@ -95,7 +95,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         id: build
         with:
           context: .
@@ -166,7 +166,7 @@ jobs:
             ${{ needs.build.outputs.image-ref }}
 
       - name: Publish container image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         id: publish
         with:
           context: .
