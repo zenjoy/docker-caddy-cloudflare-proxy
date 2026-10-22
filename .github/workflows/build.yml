@@ -10,6 +10,7 @@ on:
     branches: [main]
     paths:
       - Dockerfile
+      - .github/workflows/** # action bumps must pass a real build before merge
 
 env:
   DOCKER_BUILDKIT: 1
@@ -31,7 +32,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Generate docker-compliant image name
         id: name
@@ -55,7 +56,7 @@ jobs:
           echo "branch=$(echo ${GIT_REF,,} | sed 's/[^a-zA-Z0-9]/-/g')" | tee -a $GITHUB_OUTPUT
 
       - name: Generate Docker metadata with Caddy version
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         id: metadata
         with:
           images: |
@@ -83,19 +84,19 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install Cosign
-        uses: sigstore/cosign-installer@v4.0.0
+        uses: sigstore/cosign-installer@v4.1.2
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Build Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         id: build
         with:
           context: .
@@ -134,25 +135,25 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install Cosign
-        uses: sigstore/cosign-installer@v4.0.0
+        uses: sigstore/cosign-installer@v4.1.2
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Login to GitHub Container Repository
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -166,7 +167,7 @@ jobs:
             ${{ needs.build.outputs.image-ref }}
 
       - name: Publish container image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         id: publish
         with:
           context: .
